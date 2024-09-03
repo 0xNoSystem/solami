@@ -58,7 +58,7 @@ pub async fn get_quote(token_in: &str, token_out: &str, wallet: &str, amount: u6
 
 fn to_pubkey(string: &str) -> Pubkey{
 
-    assert_eq!(string.len(), 42, "Address length is different than 32");
+    assert_eq!(string.len(), 42, "Address length is different than 42");
 
     let mut string_array: [u8; 42] = [0; 42];
     string_array.copy_from_slice(string.as_bytes());
