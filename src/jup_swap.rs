@@ -67,6 +67,11 @@ fn to_pubkey(string: &str) -> Result<Pubkey, String>{
             string_array.copy_from_slice(string.as_bytes());
             Ok(Pubkey::from(string_array))
             }
+
+        43 =>{
+            let pubkey = string.parse::<Pubkey>().expect("Invalid public key format");
+            Ok(pubkey)
+        }
         44 => {
             let pubkey = string.parse::<Pubkey>().expect("Invalid public key format");
             Ok(pubkey)
