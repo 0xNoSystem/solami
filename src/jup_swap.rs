@@ -60,11 +60,7 @@ pub async fn get_quote(token_in: &str, token_out: &str, wallet: &str, amount: u6
 
 fn to_pubkey(string: &str) -> Result<Pubkey, String>{
 
-<<<<<<< HEAD
     match string.len(){
-=======
-    //assert_eq!(string.as_bytes().len(), 32, "Address length is different than 32");
->>>>>>> db56fc5921c1b55c40eeba8390dd74250ec11651
 
         32 => { 
             let mut string_array: [u8; 32] = [0; 32];
@@ -79,14 +75,9 @@ fn to_pubkey(string: &str) -> Result<Pubkey, String>{
             Ok(pubkey!(Pubkey::from(string_array)))
             }
 
-<<<<<<< HEAD
         _ => {
             return Err("String doesn't match length".to_string());
         }
     }
     
 }
-=======
-    pubkey!(Pubkey::from(string_array))
-}
->>>>>>> db56fc5921c1b55c40eeba8390dd74250ec11651
