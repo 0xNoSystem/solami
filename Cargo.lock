@@ -1802,6 +1802,7 @@ dependencies = [
 name = "sol0x_nosystem"
 version = "0.1.0"
 dependencies = [
+ "bs58",
  "jupiter-swap-api-client",
  "reqwest",
  "serde_json",

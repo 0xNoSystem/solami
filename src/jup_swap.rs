@@ -1,19 +1,21 @@
+
+use bs58;
 use jupiter_swap_api_client::{
     quote::QuoteRequest, swap::SwapRequest, transaction_config::TransactionConfig,
     JupiterSwapApiClient,
 };
-use solana_sdk::pubkey::{Pubkey, PubkeyError};
+use solana_sdk::pubkey::Pubkey;
 use solana_sdk::pubkey;
+
 
 
 #[tokio::main]
 pub async fn get_quote(token_in: &str, token_out: &str, wallet: &str, amount: u64){
     let jupiter_swap_api_client = JupiterSwapApiClient::new(String::from("https://quote-api.jup.ag/v6"));
 
-    
-    let token_in: Pubkey = to_pubkey(token_in);
-    let token_out: Pubkey = to_pubkey(token_out);
-    let wallet: Pubkey = to_pubkey(wallet);
+    let token_in: Pubkey = to_pubkey(token_in).unwrap();
+    let token_out: Pubkey = to_pubkey(token_out).unwrap();
+    let wallet: Pubkey = to_pubkey(wallet).unwrap();
 
     //amount: 1000 =  1 SOL
     let quote_request = QuoteRequest {
@@ -56,12 +58,26 @@ pub async fn get_quote(token_in: &str, token_out: &str, wallet: &str, amount: u6
 
 
 
-fn to_pubkey(string: &str) -> Pubkey{
+fn to_pubkey(string: &str) -> Result<Pubkey, String>{
 
-    assert_eq!(string.len(), 32, "Address length is different than 32");
+    match string.len(){
 
-    let mut string_array: [u8; 32] = [0; 32];
-    string_array.copy_from_slice(string.as_bytes());
+        32 => { 
+            let mut string_array: [u8; 32] = [0; 32];
+            string_array.copy_from_slice(string.as_bytes());
+            Ok(pubkey!(Pubkey::from(string_array)))
+            }
+        
+        44=> {
+            let mut string_array: [u8; 32] = [0;32];
+            let pubkey_bytes = bs58::encode(string.as_bytes()).into_string();
+            string_array.copy_from_slice(pubkey_bytes.as_bytes());
+            Ok(pubkey!(Pubkey::from(string_array)))
+            }
 
-    pubkey!(Pubkey::from(string_array))
+        _ => {
+            return Err("String doesn't match length".to_string());
+        }
+    }
+    
 }
