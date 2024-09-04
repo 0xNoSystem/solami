@@ -65,21 +65,12 @@ fn to_pubkey(string: &str) -> Result<Pubkey, String>{
         32 => { 
             let mut string_array: [u8; 32] = [0; 32];
             string_array.copy_from_slice(string.as_bytes());
-            Ok(pubkey!(Pubkey::from(string_array)))
+            Ok(Pubkey::from(string_array))
             }
-        43 => {
-            let mut string_array: [u8; 32] = [0;32];
-            let pubkey_bytes = bs58::encode(string.as_bytes()).into_string();
-            string_array.copy_from_slice(pubkey_bytes.as_bytes());
-            Ok(pubkey!(Pubkey::from(string_array)))
-            }
-        
-        44=> {
-            let mut string_array: [u8; 32] = [0;32];
-            let pubkey_bytes = bs58::encode(string.as_bytes()).into_string();
-            string_array.copy_from_slice(pubkey_bytes.as_bytes());
-            Ok(pubkey!(Pubkey::from(string_array)))
-            }
+        44 => {
+            let pubkey = string.parse::<Pubkey>().expect("Invalid public key format");
+            Ok(pubkey)
+        }
 
         _ => {
             return Err("String doesn't match length".to_string());
