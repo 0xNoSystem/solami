@@ -67,6 +67,12 @@ fn to_pubkey(string: &str) -> Result<Pubkey, String>{
             string_array.copy_from_slice(string.as_bytes());
             Ok(pubkey!(Pubkey::from(string_array)))
             }
+        43 => {
+            let mut string_array: [u8; 32] = [0;32];
+            let pubkey_bytes = bs58::encode(string.as_bytes()).into_string();
+            string_array.copy_from_slice(pubkey_bytes.as_bytes());
+            Ok(pubkey!(Pubkey::from(string_array)))
+            }
         
         44=> {
             let mut string_array: [u8; 32] = [0;32];
