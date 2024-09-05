@@ -5,12 +5,12 @@ use jupiter_swap_api_client::{
     JupiterSwapApiClient,
 };
 use solana_sdk::pubkey::Pubkey;
-use solana_sdk::pubkey;
-
+use solana_sdk::transaction::Transaction;
+use solana_sdk::signer::keypair;
 
 
 #[tokio::main]
-pub async fn get_quote(token_in: &str, token_out: &str, wallet: &str, amount: u64){
+pub async fn get_tx(token_in: &str, token_out: &str, wallet: &str, amount: u64)/*-> Result<Transaction, String>*/{
     let jupiter_swap_api_client = JupiterSwapApiClient::new(String::from("https://quote-api.jup.ag/v6"));
 
     let token_in: Pubkey = to_pubkey(token_in).unwrap();
@@ -53,7 +53,9 @@ pub async fn get_quote(token_in: &str, token_out: &str, wallet: &str, amount: u6
         })
         .await
         .unwrap();
-    println!("{swap_instructions:#?}");
+    //println!("{swap_instructions:#?}");
+
+    print!("{:?}", swap_response.swap_transaction);
 }
 
 
