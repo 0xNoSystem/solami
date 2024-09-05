@@ -58,8 +58,28 @@ pub async fn get_quote(token_in: &str, token_out: &str, wallet: &str, amount: u6
 
 
 
-fn to_pubkey(pubkey_str: &str) -> Result<Pubkey, String>{
+fn to_pubkey(string: &str) -> Result<Pubkey, String>{
 
-        let pubkey = pubkey_str.parse::<Pubkey>().expect("Invalid public key format");
-        Ok(pubkey)
+    match string.len(){
+
+        32 => { 
+            let mut string_array: [u8; 32] = [0; 32];
+            string_array.copy_from_slice(string.as_bytes());
+            Ok(Pubkey::from(string_array))
+            }
+
+        43 => {
+            let pubkey = string.parse::<Pubkey>().expect("Invalid public key format");
+            Ok(pubkey)
+        }
+        44 => {
+            let pubkey = string.parse::<Pubkey>().expect("Invalid public key format");
+            Ok(pubkey)
+        }
+
+        _ => {
+            return Err("String doesn't match length".to_string());
+        }
+    }
+    
 }
